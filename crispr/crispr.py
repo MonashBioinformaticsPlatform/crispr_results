@@ -1,5 +1,5 @@
 from flask import Flask, abort, redirect, url_for, \
-    render_template
+    render_template, send_from_directory
 
 import os
 import vcfParse
@@ -21,43 +21,31 @@ def get_data_index_dir():
     return data_index_dir
 
 
-def get_data_index_files():
-    return os.listdir(get_data_index_dir())    
+def get_data_dirs():
+    return [name for name in os.listdir(get_data_index_dir())
+            if os.path.isdir(os.path.join(get_data_index_dir(), name))]
 
 
-def get_reports_from_data_index_file(index_file):
-    
-    vcf = ''
-    bam = ''
+def get_reports_from_data_dir(index_dir):
+
+    datadir = os.path.join(get_data_index_dir(), index_dir)
     datadirs = dict()
-        
-    with open(os.path.join(get_data_index_dir(),index_file), 'r') as f:
-        for line in f.readlines():
-            if len(line.strip()) == 0:
-                continue
-
-            if vcf and not bam:
-                if line.strip().startswith(os.path.sep):
-                    bam = line.strip()
-                else:
-                    bam = os.path.join(app.root_path, line.strip())
-                
-            if not vcf:
-                if line.strip().startswith(os.path.sep):
-                    vcf = line.strip()
-                else:
-                    vcf = os.path.join(app.root_path, line.strip())
     
-    datadirs['vcf'] = vcf
-    datadirs['bam'] = bam
+    datadirs['vcf'] = os.path.join(datadir,'vcf')
+    datadirs['bam'] = os.path.join(datadir,'bam')
     return datadirs
+
+
+@app.route('/data/<path:path>')
+def send_data(path):
+    return send_from_directory('data', path)
 
 
 # TODO get data index
 @app.route('/')
 def index():
     
-    return render_template('index.html', reports=get_data_index_files())
+    return render_template('index.html', reports=get_data_dirs())
 
 
 # TODO make sample index and GET
@@ -66,7 +54,7 @@ def report(report_name):
 
     name = report_name
     
-    datadirs = get_reports_from_data_index_file(name)
+    datadirs = get_reports_from_data_dir(name)
     vcf = vcfParse.crispr_report_sample_list(datadirs['vcf'])
     
     return render_template('report.html', report_name=name, samples=vcf)
@@ -76,13 +64,17 @@ def report(report_name):
 @app.route('/report/<report_name>/<sample_name>')
 def sample(report_name, sample_name):
     
-    datadirs = get_reports_from_data_index_file(report_name)
+    boundary = app.config['SEQ_DISPLAY_BOUNDARY']
+    
+    datadirs = get_reports_from_data_dir(report_name)
    
     #vcfFiles = '/home/kirill/projects/MichelleMeilak/firstRun-pilotGenotype/freebiTestRun'
     #bamFiles = '/home/kirill/projects/MichelleMeilak/firstRun-pilotGenotype/bams-arch'
     
-    vcf = vcfParse.crispr_report_sample_info(datadirs['vcf'], datadirs['bam'], sample_name, threshold=1000)
+    vcf = vcfParse.crispr_report_sample_info(datadirs['vcf'],
+                                             datadirs['bam'], sample_name, threshold=1000)
     
-    return render_template('sample.html', sample_name=sample_name, report_name=report_name, vcf=vcf, bam_dir=datadirs['bam'])
+    #full os path.. bam_dir=datadirs['bam']
     
-    return render_template('sample.html', name=vcf[0]['name'], vcf=vcf)
+    return render_template('sample.html', sample_name=sample_name, report_name=report_name,
+                           vcf=vcf, boundary=boundary)

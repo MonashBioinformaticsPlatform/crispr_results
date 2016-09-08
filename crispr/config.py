@@ -1,2 +1,4 @@
 # absolute or relative path to your data index directory
-DATA_INDEX_DIRECTORY = 'data-index-example'
+# NOTE: this directory will be served
+DATA_INDEX_DIRECTORY = 'data'
+SEQ_DISPLAY_BOUNDARY = 200

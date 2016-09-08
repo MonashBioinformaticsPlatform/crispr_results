@@ -1,6 +1,8 @@
 <!doctype html>
 <title>Crispr Reports</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<script src="{{ url_for('static', filename='js/node_modules/pileup/dist/pileup.min.js') }}"></script>
+
 <div class=page>
   <h1>Crispr Reports</h1>
   <div class="breadcrumbs">
@@ -15,4 +17,5 @@
     {% endif %}      
   </div>
   {% block body %}{% endblock %}
+    {{pileup_js_location}}
 </div>
