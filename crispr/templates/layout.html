@@ -1,7 +1,18 @@
 <!doctype html>
-<title>Crispr Report</title>
+<title>Crispr Reports</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=page>
-  <h1>Crispr Report</h1>
+  <h1>Crispr Reports</h1>
+  <div class="breadcrumbs">
+    <a href="/">Report Index</a>
+      
+    {% if report_name %}
+      > <a href="/report/{{report_name}}">{{report_name}}</a>
+    {% endif %}
+      
+    {% if sample_name %}
+      > <a href="/report/{{report_name}}/{{sample_name}}">{{sample_name}}</a>
+    {% endif %}      
+  </div>
   {% block body %}{% endblock %}
 </div>

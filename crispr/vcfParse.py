@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-15 -*-
+# mostly written by Kirill Tsyganov
 
 def atoi(text):
     return int(text) if text.isdigit() else text
@@ -41,7 +42,8 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000):
         vcfFile = open(os.path.join(vcfFiles, item))
 
         #bamFile = open(os.path.join(bamFiles, item.split("_")[0]+"_sorted.bam"))
-        bamFile = item.split(".")[0]+"_sorted.bam"
+        bamFile = item.split(".")[0]
+        bamFile = bamFile.split("_")[0]+"_sorted.bam"
         tmpName = item.split(".")[0]
         name = 'Sample-%s' % tmpName
         counter=0

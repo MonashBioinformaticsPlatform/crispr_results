@@ -1,12 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
-      <h2>{{ name }}</h2>
-      <br/>
+
+      <h2 align="Center">Report Index</h2>
 
       <table class="vcf" frame="void" rules="all" border="1" align="center" cellpadding="3px">
-          <tr>
-              <th>Report</th>
-          </tr>
       {% for report in reports %}
           <tr class=entries>
               <td><a href="/report/{{report}}">{{report}}</a></td>

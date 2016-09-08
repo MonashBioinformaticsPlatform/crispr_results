@@ -35,18 +35,18 @@ def get_reports_from_data_index_file(index_file):
         for line in f.readlines():
             if len(line.strip()) == 0:
                 continue
-            
+
+            if vcf and not bam:
+                if line.strip().startswith(os.path.sep):
+                    bam = line.strip()
+                else:
+                    bam = os.path.join(app.root_path, line.strip())
+                
             if not vcf:
                 if line.strip().startswith(os.path.sep):
                     vcf = line.strip()
                 else:
                     vcf = os.path.join(app.root_path, line.strip())
-                
-            if not bam:
-                if line.strip().startswith(os.path.sep):
-                    bam = line.strip()
-                else:
-                    bam = os.path.join(app.root_path, line.strip())
     
     datadirs['vcf'] = vcf
     datadirs['bam'] = bam
@@ -69,7 +69,7 @@ def report(report_name):
     datadirs = get_reports_from_data_index_file(name)
     vcf = vcfParse.crispr_report_sample_list(datadirs['vcf'])
     
-    return render_template('report.html', name=name, samples=vcf)
+    return render_template('report.html', report_name=name, samples=vcf)
 
 
 # TODO make data index
@@ -83,6 +83,6 @@ def sample(report_name, sample_name):
     
     vcf = vcfParse.crispr_report_sample_info(datadirs['vcf'], datadirs['bam'], sample_name, threshold=1000)
     
-    print sample_name
+    return render_template('sample.html', sample_name=sample_name, report_name=report_name, vcf=vcf, bam_dir=datadirs['bam'])
     
     return render_template('sample.html', name=vcf[0]['name'], vcf=vcf)
