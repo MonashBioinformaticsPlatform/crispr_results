@@ -80,8 +80,8 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000):
     
     return change_list
 
-vcfFiles = '/home/kirill/projects/MichelleMeilak/firstRun-pilotGenotype/freebiTestRun'
-bamFiles = '/home/kirill/projects/MichelleMeilak/firstRun-pilotGenotype/bams-arch'
+#vcfFiles = '/home/kirill/projects/MichelleMeilak/firstRun-pilotGenotype/freebiTestRun'
+#bamFiles = '/home/kirill/projects/MichelleMeilak/firstRun-pilotGenotype/bams-arch'
 
 #print crispr_report_sample_list(vcfFiles)
 #print crispr_report_sample_info(vcfFiles, bamFiles, '22_freebayes.vcf')
