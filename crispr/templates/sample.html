@@ -24,6 +24,9 @@
               <td>{{change.depth}}</td>
               <td>{{change.bam}} - {{change.locus}} - {{bam_dir}}/{{change.bam}}</td>
           </tr>
+          </table>
+          
+          {% if pileup_js_enabled %}
           <div id="{{change.locus}}">
               
           </div>
@@ -54,7 +57,9 @@
 			  ]
 			});              
           </script>
-      </table>   
+          {% else %}
+            <br/><br/><br/><br/>
+          {% endif %}  
       {% endfor %}
       
 

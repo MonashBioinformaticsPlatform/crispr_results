@@ -77,4 +77,5 @@ def sample(report_name, sample_name):
     #full os path.. bam_dir=datadirs['bam']
     
     return render_template('sample.html', sample_name=sample_name, report_name=report_name,
-                           vcf=vcf, boundary=boundary)
+                           vcf=vcf, boundary=boundary,
+                           pileup_js_enabled=app.config['PILEUP_JS_ENABLED'])
