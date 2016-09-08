@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block body %}
+      <h2>{{ name }}</h2>
+      <br/>
+
+      <table class="vcf" frame="void" rules="all" border="1" align="center" cellpadding="3px">
+          <tr>
+              <td>Chrom</td>
+              <td>Position</td>
+              <td>Reference</td>
+              <td>Alternative</td>
+              <td>Quality</td>
+              <td>Depth</td>
+              <td>Bam debug info..</td>
+          </tr>
+      {% for change in vcf %}
+          <tr class=entries>
+              <td>{{change.chrom}}</td>
+              <td>{{change.position}}</td>     
+              <td>{{change.reference}}</td>
+              <td>{{change.alternative}}</td>
+              <td>{{change.quality}}</td>
+              <td>{{change.depth}}</td>
+              <td>{{change.bam}} - {{change.locus}}</td>
+          </tr>
+      {% endfor %}
+      </table>
+
+{% endblock %}

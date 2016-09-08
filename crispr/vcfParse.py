@@ -62,6 +62,7 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000):
                 #igvLink = igvTemplate % (bamFile, bamFile, locus)
 
                 # LOGIC HERE
+                print depth
                 if m and depth > threshold:
 
                     tmp_changedict = dict()

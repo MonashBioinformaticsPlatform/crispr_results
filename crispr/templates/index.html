@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block body %}
+      <h2>{{ name }}</h2>
+      <br/>
+
+      <table class="vcf" frame="void" rules="all" border="1" align="center" cellpadding="3px">
+          <tr>
+              <th>Report</th>
+          </tr>
+      {% for report in reports %}
+          <tr class=entries>
+              <td><a href="/report/{{report}}">{{report}}</a></td>
+          </tr>
+      {% endfor %}
+      </table>
+
+{% endblock %}
