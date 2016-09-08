@@ -45,7 +45,8 @@ def send_data(path):
 @app.route('/')
 def index():
     
-    return render_template('index.html', reports=get_data_dirs())
+    return render_template('index.html', reports=get_data_dirs(),
+                           data_dir=get_data_index_dir())
 
 
 # TODO make sample index and GET

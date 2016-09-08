@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 
-      <h2 align="Center">Report Index</h2>
+      <h2 align="Center">Report Index..</h2>
 
       <table class="vcf" frame="void" rules="all" border="1" align="center" cellpadding="3px">
       {% for report in reports %}
@@ -10,5 +10,10 @@
           </tr>
       {% endfor %}
       </table>
+
+      <p align="center" style="padding-top: 9em">
+          <small>Reports are being sourced on this server from (vcf and bam files):<br>
+              {{data_dir}}</small>
+      </p>
 
 {% endblock %}
