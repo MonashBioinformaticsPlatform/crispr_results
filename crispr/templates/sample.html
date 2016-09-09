@@ -3,7 +3,6 @@
       <h2 align="Center">Sample: {{ sample_name }}</h2>
       <br/>
 
-      {% for change in vcf %}
       <table class="table sample">
           <thead>
           <tr>
@@ -17,9 +16,11 @@
               <td></td>
           </tr>
           </thead>
+      {% for change in vcf %}
+
           <tr class=entries>
               <td>{{change.chrom}}</td>
-              <td>{{change.position}}</td>     
+              <td><button onclick="p.setRange({contig: '{{change.chrom}}', start: {{change.position - boundary}}, stop: {{change.position + boundary}}});">{{change.position}}</button></td>     
               <td>{{change.reference}}</td>
               <td>{{change.alternative}}</td>
               <td>{{change.quality}}</td>
@@ -27,9 +28,14 @@
               <td><a href="/data/{{report_name}}/vcf/{{change.vcf}}">vcf</a></td>
               <td><a href="/data/{{report_name}}/bam/{{change.bam}}">bam</a></td>
           </tr>
-          </table>
-          
+  
+      {% endfor %}
+      </table>
+      
+      {% for change in vcf %}
+
          {% if pileup_js_enabled %}
+         {% if loop.first %}
           <div id="{{change.locus}}" class="pileup-div">
    
           </div>
@@ -126,11 +132,12 @@
         });
 
         </script>
+          {% endif %}
 
           {% else %}
             <br/><br/><br/><br/>
-          {% endif %}  
-      {% endfor %}
-      
+          {% endif %}
+
+    {% endfor %}
 
 {% endblock %}

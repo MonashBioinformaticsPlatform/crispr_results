@@ -66,7 +66,8 @@ def crispr_report_sample_list(vcfFiles):
     return sample_list
 
 
-def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000):
+def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000,
+                              quality_lim = 60000):
     
     change_list = dict()
     
@@ -112,7 +113,8 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000):
 
             # LOGIC HERE
             #print depth
-            if m and depth > threshold:
+            quality = items[5]
+            if m and depth > threshold and float(quality) > quality_lim:
 
                 tmp_changedict = dict()
                 tmp_changedict['name'] = name
