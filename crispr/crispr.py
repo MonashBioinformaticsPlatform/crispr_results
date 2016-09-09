@@ -80,7 +80,7 @@ def sample(report_name, sample_name):
     #bamFiles = '/home/kirill/projects/MichelleMeilak/firstRun-pilotGenotype/bams-arch'
     
     vcf = vcfParse.crispr_report_sample_info(datadirs['vcf'],
-                                             datadirs['bam'], sample_name, threshold=1000,
+                                             datadirs['bam'], sample_name, threshold=5000,
                                              quality_lim=60000)
     
     #full os path.. bam_dir=datadirs['bam']

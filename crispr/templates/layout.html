@@ -7,7 +7,7 @@
 <script src="{{ url_for('static', filename='js/node_modules/pileup/dist/pileup.min.js') }}"></script>
 
 <div class=page>
-  <h1>Crispr Reports</h1>
+  <h1>Crispr Reports</h1>  
   <div class="breadcrumbs">
     <a href="/">Report Index</a>
       
@@ -22,3 +22,14 @@
   {% block body %}{% endblock %}
     {{pileup_js_location}}
 </div>
+
+      <p align="center" style="padding-top: 9em">
+          <small><a href="http://monash.edu/bioinformatics">Monash Bioinformatics Platform</a> - Source: <a href="https://github.com/MonashBioinformaticsPlatform/crispr_results">https://github.com/MonashBioinformaticsPlatform/crispr_results</a></small>
+      {% if data_dir %} 
+          <br/><br/>
+          <em>
+          <small><strong>Reports are being sourced on this server from (vcf and bam files) here:</strong><br/>
+              {{data_dir}}</small>
+          <em>
+      {% endif %}
+      </p>
