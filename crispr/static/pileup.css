@@ -7,7 +7,9 @@
 .pileup-root {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 500px;
+  margin: 0 0 5em 0;
+  border: 2px solid #d1e1e8;
 }
 
 .pileup-root > .track {

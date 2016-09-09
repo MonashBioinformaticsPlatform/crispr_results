@@ -29,47 +29,104 @@
           </tr>
           </table>
           
-          {% if pileup_js_enabled %}
-          <div id="{{change.locus}}" class="pileup">
-              <div class="track fixed">
-                <div class="track-label">Reference</div>
-                <div class="track-content"></div>
-              </div>
-              <div class="track variable">
-                <div class="track-label">Normal</div>
-                <div class="track-content">
-                  <div class="inner"></div>
-                </div>
-              </div>          
+         {% if pileup_js_enabled %}
+          <div id="{{change.locus}}" class="pileup-div">
+   
           </div>
-          
-          <script type="text/javascript">
-			var div = document.getElementById('{{change.locus}}');
-			var p = pileup.create(div, {
-			  range: {contig: '{{change.chrom}}', start: {{change.position - boundary}}, stop: {{change.position + boundary}}},
-			  tracks: [
-				{
-				  viz: pileup.viz.genome(),
-				  isReference: true,
-				  data: pileup.formats.twoBit({
-					url: 'http://www.biodalliance.org/datasets/GRCm38/mm10.2bit'
-				  }),
-                  cssClass: 'fixed',
-				  name: 'Reference'
-				},
-				{
-				  viz: pileup.viz.coverage(),
-				  data: pileup.formats.bam({
-					url: '/data/{{report_name}}/bam/{{change.bam}}',
-					indexUrl: '/data/{{report_name}}/bam/{{change.bam}}.bai'
-				  }),
-				  cssClass: 'variable',
-				  name: 'Alignments'
-				}
-				// ...
-			  ]
-			});              
-          </script>
+
+        <script type="text/javascript">
+        // Some data for the demo.
+
+        // We are going to use the same data source for multiple tracks
+        var bamSource = pileup.formats.bam({
+          url: '/data/{{report_name}}/bam/{{change.bam_sub}}',
+          indexUrl: '/data/{{report_name}}/bam/{{change.bam_sub}}.bai'
+        });
+
+        var sources = [
+          {
+            viz: pileup.viz.genome(),
+            isReference: true,
+            data: pileup.formats.twoBit({
+              url: 'http://www.biodalliance.org/datasets/GRCm38/mm10.2bit'
+            }),
+            name: 'Reference'
+          },
+          {
+            viz: pileup.viz.scale(),
+            name: 'Scale'
+          },
+          {
+            viz: pileup.viz.location(),
+            name: 'Location'
+          },
+          {
+            viz: pileup.viz.variants(),
+            data: pileup.formats.vcf({
+              url: '/data/{{report_name}}/vcf/{{change.vcf}}'
+            }),
+            name: 'Variants'
+          },
+          {
+            viz: pileup.viz.genes(),
+            data: pileup.formats.bigBed({
+              url: 'http://www.biodalliance.org/datasets/GRCm38/gencodeM2.bb'
+            }),
+            name: 'Genes'
+          },
+          {
+            viz: pileup.viz.coverage(),
+            data: bamSource,
+            cssClass: 'normal',
+            name: 'Coverage'
+          },
+          {
+            viz: pileup.viz.pileup(),
+            data: bamSource,
+            cssClass: 'normal',
+            name: 'Alignments'
+          }
+        ];
+
+        var range = {contig: '{{change.chrom}}',
+                     start: {{change.position - boundary}}, stop: {{change.position + boundary}}};
+
+        //var range = {contig: 'chr17', start: 7512284, stop: 7512644};
+
+        // Try to read a range out of the URL. This is helpful for testing.
+        function getParameterByName(name) {
+          name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+          var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+              results = regex.exec(location.search);
+          return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+        var pos = getParameterByName('pos');
+
+        if (pos) {
+          var m = /(.*):([0-9,]+)-([0-9,]+)/.exec(pos);
+          if (!m) { throw 'Invalid range: ' + pos; }
+          var makeNum = function(x) { return Number(x.replace(/,/g, '')); };
+          range = {contig: m[1], start: makeNum(m[2]), stop: makeNum(m[3])};
+        } else {
+          // use default range from, e.g. data.js
+        }
+
+        var colorByStrand = getParameterByName('colorByStrand');
+        if (colorByStrand) {
+          sources.forEach(source => {
+            if (source.viz.options) {
+              source.viz.options.colorByStrand = true;
+            }
+          });
+        }
+
+        var p = pileup.create(document.getElementById('{{change.locus}}'), {
+          range: range,
+          tracks: sources
+        });
+
+        </script>
+
           {% else %}
             <br/><br/><br/><br/>
           {% endif %}  

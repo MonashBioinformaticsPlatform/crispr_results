@@ -44,7 +44,7 @@ def send_data(path):
 # TODO get data index
 @app.route('/')
 def index():
-    
+
     return render_template('index.html', reports=get_data_dirs(),
                            data_dir=get_data_index_dir())
 
@@ -57,6 +57,13 @@ def report(report_name):
     
     datadirs = get_reports_from_data_dir(name)
     vcf = vcfParse.crispr_report_sample_list(datadirs['vcf'])
+    
+    ## remove.. testing get info for all samples in report
+
+    #for v in vcf:
+    #    vcfParse.crispr_report_sample_info(datadirs['vcf'],
+    #                                         datadirs['bam'], v, threshold=1000)
+    ## remove above    
     
     return render_template('report.html', report_name=name, samples=vcf)
 
