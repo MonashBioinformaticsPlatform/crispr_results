@@ -30,8 +30,17 @@
           </table>
           
           {% if pileup_js_enabled %}
-          <div id="{{change.locus}}">
-              
+          <div id="{{change.locus}}" class="pileup">
+              <div class="track fixed">
+                <div class="track-label">Reference</div>
+                <div class="track-content"></div>
+              </div>
+              <div class="track variable">
+                <div class="track-label">Normal</div>
+                <div class="track-content">
+                  <div class="inner"></div>
+                </div>
+              </div>          
           </div>
           
           <script type="text/javascript">
@@ -45,6 +54,7 @@
 				  data: pileup.formats.twoBit({
 					url: 'http://www.biodalliance.org/datasets/GRCm38/mm10.2bit'
 				  }),
+                  cssClass: 'fixed',
 				  name: 'Reference'
 				},
 				{
@@ -53,7 +63,7 @@
 					url: '/data/{{report_name}}/bam/{{change.bam}}',
 					indexUrl: '/data/{{report_name}}/bam/{{change.bam}}.bai'
 				  }),
-				  cssClass: 'normal',
+				  cssClass: 'variable',
 				  name: 'Alignments'
 				}
 				// ...

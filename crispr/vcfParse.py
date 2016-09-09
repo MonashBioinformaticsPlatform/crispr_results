@@ -43,7 +43,7 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000):
 
         #bamFile = open(os.path.join(bamFiles, item.split("_")[0]+"_sorted.bam"))
         bamFile = item.split(".")[0]
-        bamFile = bamFile.split("_")[0]+"_sorted.bam"
+        bamFile = bamFile.split("_")[0]+"_sorted_sub.bam"
         tmpName = item.split(".")[0]
         name = 'Sample-%s' % tmpName
         counter=0

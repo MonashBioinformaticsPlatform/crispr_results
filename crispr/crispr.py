@@ -80,3 +80,10 @@ def sample(report_name, sample_name):
     return render_template('sample.html', sample_name=sample_name, report_name=report_name,
                            vcf=vcf, boundary=boundary,
                            pileup_js_enabled=app.config['PILEUP_JS_ENABLED'])
+
+
+# TODO get data index
+@app.route('/pileup')
+def pileup():
+    
+    return render_template('pileup.html')
