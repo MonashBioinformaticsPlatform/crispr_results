@@ -52,7 +52,7 @@ def sub_index_bam(bam_file):
         print line        
 
 def render_indel_html(chrom, pos, ref_seq, alt_seq,
-                      twobit_file = 'ref/mm10.2bit', boundary = 5):
+                      twobit_file = 'ref/mm10.2bit', boundary = 20):
     import twobitreader
     
     boundary = boundary + 1
@@ -61,31 +61,52 @@ def render_indel_html(chrom, pos, ref_seq, alt_seq,
     
     ref_length = len(ref_seq)
     alt_length = len(alt_seq)
-
+    
     # pad by whichever seq is longest
     bounds = [ref_length + boundary, alt_length + boundary]
     boundary_end = max(bounds)
     print 'boundary_end' + str(boundary_end)
     
+    # is indel a direct sub, a delete or insert?
+    # this affects colours rendered in sequence also
+    in_or_del = 'sub'
+    if ref_length > alt_length:
+        in_or_del = 'delete'
+    elif ref_length < alt_length:
+        in_or_del = 'insert'
+    
     startpos = pos - boundary
-    endpos = startpos + (boundary+boundary_end) - 2
+    endpos = pos + boundary
 
-    surrounding_seq = twobit_ref[chrom][startpos:endpos] 
+    prefix = twobit_ref[chrom][startpos:pos-1]
+    suffix = twobit_ref[chrom][pos+ref_length-1:endpos]
+    
+    #raise    
+    
+    bp_text = ''
+    bp_calc = alt_length
 
-    prefix = surrounding_seq[:boundary-1]
-    suffix = surrounding_seq[boundary_end-1:]    
-    print prefix
-    print suffix
-    print surrounding_seq
-    print endpos
+    if in_or_del == 'sub':
+        bp_text = "<strong class='%s'>%sbp substitution</strong>" \
+        % (in_or_del, bp_calc)
+    elif in_or_del == 'insert':
+        bp_calc = alt_length - ref_length
+        bp_text = "<strong class='%s'>%sbp insert</strong>" \
+        % (in_or_del, bp_calc)
+    else:
+        bp_calc = ref_length - alt_length
+        bp_text = "<strong class='%s'>%sbp deletion</strong>" \
+        % (in_or_del, bp_calc)
 
-    ref_html = prefix + '<strong>' + \
+    ref_html = '<strong>REF: </strong>' + prefix + \
+        '<strong class="' + in_or_del + '">' + \
         ref_seq.ljust(alt_length, '-') + '</strong>' + suffix
     
-    alt_html = prefix + '<strong style="color:red">' + \
+    alt_html = '<strong>ALT: </strong>' + prefix \
+        + '<strong class="' + in_or_del + '">' + \
         alt_seq.ljust(ref_length, '-') + '</strong>' + suffix
     
-    return '<pre>%s<br/>%s</pre>' % (ref_html, alt_html)
+    return '<pre>%s<br/>%s<br/>%s</pre>' % (bp_text, ref_html, alt_html)
 
         
 import sys, re, os, argparse
