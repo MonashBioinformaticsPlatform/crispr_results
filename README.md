@@ -1,3 +1,11 @@
+# Crispr Results
+
+Crispr Experiment Report Viewer.
+
+[Screenshot](https://dl.dropboxusercontent.com/u/172498/host/crispr_reports_160910.PNG)
+
+## Running
+
 ```
 # from crispr/ dir
 export FLASK_APP=crispr.py
@@ -10,13 +18,13 @@ Tests:
 python tests/crispr_tests.py
 ```
 
-# Dependencies
+## Dependencies
 
 Python: Flask
 Nodejs: Pileup.js (install into `static/js`)
 2bit mm10 reference: Run `./getmm10.sh` from `crispr/ref` dir
 
-# Configuration
+## Configuration
 
 _Example data has been included that works on app start._
 
