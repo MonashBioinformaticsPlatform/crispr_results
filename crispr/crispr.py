@@ -8,6 +8,7 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('crispr.config')
 app.config.from_pyfile('config.py', silent=True)
 
+
 def get_data_index_dir():
     dir_from_cfg = app.config['DATA_INDEX_DIRECTORY']
     

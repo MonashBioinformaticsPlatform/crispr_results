@@ -50,6 +50,43 @@ def sub_index_bam(bam_file):
     
     for line in process.stderr:
         print line        
+
+def render_indel_html(chrom, pos, ref_seq, alt_seq,
+                      twobit_file = 'ref/mm10.2bit', boundary = 5):
+    import twobitreader
+    
+    boundary = boundary + 1
+
+    twobit_ref = twobitreader.TwoBitFile(twobit_file)
+    
+    ref_length = len(ref_seq)
+    alt_length = len(alt_seq)
+
+    # pad by whichever seq is longest
+    bounds = [ref_length + boundary, alt_length + boundary]
+    boundary_end = max(bounds)
+    print 'boundary_end' + str(boundary_end)
+    
+    startpos = pos - boundary
+    endpos = startpos + (boundary+boundary_end) - 2
+
+    surrounding_seq = twobit_ref[chrom][startpos:endpos] 
+
+    prefix = surrounding_seq[:boundary-1]
+    suffix = surrounding_seq[boundary_end-1:]    
+    print prefix
+    print suffix
+    print surrounding_seq
+    print endpos
+
+    ref_html = prefix + '<strong>' + \
+        ref_seq.ljust(alt_length, '-') + '</strong>' + suffix
+    
+    alt_html = prefix + '<strong style="color:red">' + \
+        alt_seq.ljust(ref_length, '-') + '</strong>' + suffix
+    
+    return '<pre>%s<br/>%s</pre>' % (ref_html, alt_html)
+
         
 import sys, re, os, argparse
 import gzip
@@ -127,7 +164,10 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000,
                 tmp_changedict['reference'] = items[3]
                 tmp_changedict['alternative'] = items[4]
                 tmp_changedict['quality'] = items[5]
-                tmp_changedict['depth'] = depth    
+                tmp_changedict['depth'] = depth
+                tmp_changedict['indel_html'] = \
+                    render_indel_html('chr' + chrom, position, items[3], items[4])
+
                 print tmp_changedict
 
                 change_list.append(tmp_changedict)

@@ -14,6 +14,7 @@ python tests/crispr_tests.py
 
 Python: Flask
 Nodejs: Pileup.js (install into `static/js`)
+2bit mm10 reference: Run `./getmm10.sh` from `crispr/ref` dir
 
 # Configuration
 
