@@ -17,7 +17,8 @@
               <td>Chrom</td>
               <td>Position</td>
               <td>Change</td>
-              <td>ALT Allele Freq</td>
+              <td>Alt Reads</td>
+              <td>Est. Allele Freq</td>
               <td>Quality</td>
               <td>Depth</td>
           </tr>
@@ -28,6 +29,7 @@
               <td>{{change.chrom}}</td>
               <td><button onclick="p.setRange({contig: '{{change.chrom}}', start: {{change.position - boundary}}, stop: {{change.position + boundary}}});">{{change.position}}</button></td>     
               <td>{{change.indel_html|safe}}</td>
+              <td>{{change.alt_read_ratio}}</td>
               <td>{{change.allele_frequency}}</td>
               <td>{{change.quality}}</td>
               <td>{{change.depth}}</td>

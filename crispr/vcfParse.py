@@ -18,7 +18,10 @@ def sub_bam_filename(bam_file):
     bam_file = "%s_sub.bam" % prefix[0]
     return bam_file
 
-def sub_sample_bam(bam_file):  
+def sub_sample_bam(bam_file):
+    if os.path.isfile(bam_file):
+        return    
+    
     import subprocess
     # todo handle different subsample
     process = subprocess.Popen(('samtools view -s 0.0003 -b %s > %s') % \
@@ -36,6 +39,9 @@ def sub_sample_bam(bam_file):
         print line
 
 def sub_index_bam(bam_file):  
+    if os.path.isfile(bam_file):
+        return
+    
     import subprocess
 
     process = subprocess.Popen(('samtools index %s') % \
@@ -79,12 +85,17 @@ def render_indel_html(chrom, pos, ref_seq, alt_seq,
     endpos = pos + boundary
 
     prefix = twobit_ref[chrom][startpos:pos-1]
-    suffix = twobit_ref[chrom][pos+ref_length-1:endpos]
+    suffix = twobit_ref[chrom][pos+ref_length-1:endpos+ref_length-2]
     
     #raise    
     
     bp_text = ''
     bp_calc = alt_length
+    
+    if pos == 77242402:
+        print "AAAHHHH"
+        print suffix
+        print endpos
 
     if in_or_del == 'sub':
         bp_text = "<strong class='%s'>%sbp substitution</strong>" \
@@ -163,6 +174,8 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000,
             m = re.search("(DP=)([0-9]+)", items[7])
             af = re.search("(AF=)([0-9]*\.[0-9]+|[0-9]+)",
                            items[7]).group(2)
+            ab = re.search("(AB=)([0-9]*\.[0-9]+|[0-9]+)",
+                           items[7]).group(2)            
             depth = int(m.group(2))
             chrom = items[0]
             position = int(items[1])
@@ -193,6 +206,8 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000,
                 tmp_changedict['depth'] = depth
                 tmp_changedict['allele_frequency'] = \
                     "{0:.0f}%".format(float(af) * 100) # as %
+                tmp_changedict['alt_read_ratio'] = \
+                    "{0:.0f}%".format(float(ab) * 100) # as %                    
                 tmp_changedict['indel_html'] = \
                     render_indel_html('chr' + chrom, position, items[3], items[4])
 
