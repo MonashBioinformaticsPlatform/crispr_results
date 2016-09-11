@@ -1,6 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
-      <h2 align="Center">Sample: {{ sample_name }}</h2>
+      <h2 align="center">Sample: {{ sample_name }}</h2>
+      {% for change in vcf %}
+        {% if loop.first %}
+          <p align="center">
+                  <a href="/data/{{report_name}}/vcf/{{change.vcf}}">vcf</a> -
+                  <a href="/data/{{report_name}}/bam/{{change.bam}}">bam</a>
+          </p>
+        {% endif %}
+      {% endfor %}
       <br/>
 
       <table class="table sample">
@@ -9,10 +17,9 @@
               <td>Chrom</td>
               <td>Position</td>
               <td>Change</td>
+              <td>ALT Allele Freq</td>
               <td>Quality</td>
               <td>Depth</td>
-              <td></td>
-              <td></td>
           </tr>
           </thead>
       {% for change in vcf %}
@@ -21,10 +28,9 @@
               <td>{{change.chrom}}</td>
               <td><button onclick="p.setRange({contig: '{{change.chrom}}', start: {{change.position - boundary}}, stop: {{change.position + boundary}}});">{{change.position}}</button></td>     
               <td>{{change.indel_html|safe}}</td>
+              <td>{{change.allele_frequency}}</td>
               <td>{{change.quality}}</td>
               <td>{{change.depth}}</td>
-              <td><a href="/data/{{report_name}}/vcf/{{change.vcf}}">vcf</a></td>
-              <td><a href="/data/{{report_name}}/bam/{{change.bam}}">bam</a></td>
           </tr>
   
       {% endfor %}

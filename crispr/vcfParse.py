@@ -161,6 +161,8 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000,
 
         if not i.startswith("#"):
             m = re.search("(DP=)([0-9]+)", items[7])
+            af = re.search("(AF=)([0-9]*\.[0-9]+|[0-9]+)",
+                           items[7]).group(2)
             depth = int(m.group(2))
             chrom = items[0]
             position = int(items[1])
@@ -168,6 +170,9 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000,
             downstream = position+200
             locus = "%s:%s-%s" % (chrom, upstream, downstream)
             #igvLink = igvTemplate % (bamFile, bamFile, locus)
+
+            #if position == 77242386:
+            #    raise
 
             # LOGIC HERE
             #print depth
@@ -186,6 +191,8 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000,
                 tmp_changedict['alternative'] = items[4]
                 tmp_changedict['quality'] = items[5]
                 tmp_changedict['depth'] = depth
+                tmp_changedict['allele_frequency'] = \
+                    "{0:.0f}%".format(float(af) * 100) # as %
                 tmp_changedict['indel_html'] = \
                     render_indel_html('chr' + chrom, position, items[3], items[4])
 
