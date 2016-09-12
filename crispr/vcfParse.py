@@ -71,7 +71,6 @@ def render_indel_html(chrom, pos, ref_seq, alt_seq,
     # pad by whichever seq is longest
     bounds = [ref_length + boundary, alt_length + boundary]
     boundary_end = max(bounds)
-    print 'boundary_end' + str(boundary_end)
     
     # is indel a direct sub, a delete or insert?
     # this affects colours rendered in sequence also
@@ -91,11 +90,6 @@ def render_indel_html(chrom, pos, ref_seq, alt_seq,
     
     bp_text = ''
     bp_calc = alt_length
-    
-    if pos == 77242402:
-        print "AAAHHHH"
-        print suffix
-        print endpos
 
     if in_or_del == 'sub':
         bp_text = "<strong class='%s'>%sbp substitution</strong>" \
@@ -211,7 +205,7 @@ def crispr_report_sample_info(vcfFiles, bamFiles, vcf, threshold = 1000,
                 tmp_changedict['indel_html'] = \
                     render_indel_html('chr' + chrom, position, items[3], items[4])
 
-                print tmp_changedict
+                #print tmp_changedict
 
                 change_list.append(tmp_changedict)
     
