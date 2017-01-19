@@ -8,9 +8,8 @@ Crispr Experiment Report Viewer.
 
 ```
 # from crispr/ dir
-export FLASK_APP=crispr.py
 export FLASK_DEBUG=1
-flask run
+export FLASK_DEBUG=1; python app.py --port 5000
 ```
 
 Tests:

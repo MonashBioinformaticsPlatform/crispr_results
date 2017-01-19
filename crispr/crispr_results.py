@@ -5,7 +5,7 @@ import os
 import vcfParse
 
 app = Flask(__name__, instance_relative_config=True)
-app.config.from_object('crispr.config')
+app.config.from_object('config')
 app.config.from_pyfile('config.py', silent=True)
 
 
@@ -96,3 +96,6 @@ def sample(report_name, sample_name):
 def pileup():
     
     return render_template('pileup.html')
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5918)
