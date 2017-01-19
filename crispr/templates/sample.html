@@ -51,8 +51,8 @@
 
         // We are going to use the same data source for multiple tracks
         var bamSource = pileup.formats.bam({
-          url: '/data/{{report_name}}/bam/{{change.bam_sub}}',
-          indexUrl: '/data/{{report_name}}/bam/{{change.bam_sub}}.bai'
+          url: '{{app_root_url}}data/{{report_name}}/bam/{{change.bam_sub}}',
+          indexUrl: '{{app_root_url}}data/{{report_name}}/bam/{{change.bam_sub}}.bai'
         });
 
         var sources = [
@@ -75,7 +75,7 @@
           {
             viz: pileup.viz.variants(),
             data: pileup.formats.vcf({
-              url: '/data/{{report_name}}/vcf/{{change.vcf}}'
+              url: '{{app_root_url}}data/{{report_name}}/vcf/{{change.vcf}}'
             }),
             name: 'Variants'
           },
