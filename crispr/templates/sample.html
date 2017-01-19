@@ -4,8 +4,8 @@
       {% for change in vcf %}
         {% if loop.first %}
           <p align="center">
-                  <a href="/data/{{report_name}}/vcf/{{change.vcf}}">vcf</a> -
-                  <a href="/data/{{report_name}}/bam/{{change.bam}}">bam</a>
+                  <a href="{{app_root_url}}data/{{report_name}}/vcf/{{change.vcf}}">vcf</a> -
+                  <a href="{{app_root_url}}data/{{report_name}}/bam/{{change.bam}}">bam</a>
           </p>
         {% endif %}
       {% endfor %}

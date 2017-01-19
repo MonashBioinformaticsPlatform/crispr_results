@@ -9,14 +9,14 @@
 <div class=page>
   <h1>Crispr Reports</h1>  
   <div class="breadcrumbs">
-    <a href="/">Report Index</a>
+    <a href="{{app_root_url}}">Report Index</a>
       
     {% if report_name %}
-      > <a href="/report/{{report_name}}">{{report_name}}</a>
+      > <a href="{{app_root_url}}report/{{report_name}}">{{report_name}}</a>
     {% endif %}
       
     {% if sample_name %}
-      > <a href="/report/{{report_name}}/{{sample_name}}">{{sample_name}}</a>
+      > <a href="{{app_root_url}}report/{{report_name}}/{{sample_name}}">{{sample_name}}</a>
     {% endif %}      
   </div>
   {% block body %}{% endblock %}

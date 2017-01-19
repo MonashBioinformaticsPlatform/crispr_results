@@ -6,7 +6,7 @@
       <table class="vcf" frame="void" rules="all" border="1" align="center" cellpadding="3px">
       {% for report in reports %}
           <tr class=entries>
-              <td><a href="/report/{{report}}">{{report}}</a></td>
+              <td><a href="{{app_root_url}}report/{{report}}">{{report}}</a></td>
           </tr>
       {% endfor %}
       </table>

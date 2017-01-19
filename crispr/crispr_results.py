@@ -45,14 +45,18 @@ def send_data(path):
 # TODO get data index
 @app.route('/')
 def index():
+    
+    app_root_url = app.config['APP_ROOT_URL']
 
     return render_template('index.html', reports=get_data_dirs(),
-                           data_dir=get_data_index_dir())
+                           data_dir=get_data_index_dir(), app_root_url=app_root_url)
 
 
 # TODO make sample index and GET
 @app.route('/report/<report_name>')
 def report(report_name):
+    
+    app_root_url = app.config['APP_ROOT_URL']
 
     name = report_name
     
@@ -66,12 +70,14 @@ def report(report_name):
     #                                         datadirs['bam'], v, threshold=1000)
     ## remove above    
     
-    return render_template('report.html', report_name=name, samples=vcf)
+    return render_template('report.html', report_name=name, samples=vcf, app_root_url=app_root_url)
 
 
 # TODO make data index
 @app.route('/report/<report_name>/<sample_name>')
 def sample(report_name, sample_name):
+    
+    app_root_url = app.config['APP_ROOT_URL']
     
     boundary = app.config['SEQ_DISPLAY_BOUNDARY']
     
@@ -88,14 +94,16 @@ def sample(report_name, sample_name):
     
     return render_template('sample.html', sample_name=sample_name, report_name=report_name,
                            vcf=vcf, boundary=boundary,
-                           pileup_js_enabled=app.config['PILEUP_JS_ENABLED'])
+                           pileup_js_enabled=app.config['PILEUP_JS_ENABLED'], app_root_url=app_root_url)
 
 
 # TODO get data index
 @app.route('/pileup')
 def pileup():
     
-    return render_template('pileup.html')
+    app_root_url = app.config['APP_ROOT_URL']
+    
+    return render_template('pileup.html', app_root_url=app_root_url)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5918)
