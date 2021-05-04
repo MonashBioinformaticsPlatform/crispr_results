@@ -4,7 +4,7 @@ ADD . /home/www/html/home/steve/host/crispr_results/
 
 WORKDIR /home/www/html/home/steve/host/crispr_results/
 
-RUN pip install -r requirements-docker.txt
+RUN pip install -r requirements.txt
 
 WORKDIR /home/www/html/home/steve/host/crispr_results/crispr
 
