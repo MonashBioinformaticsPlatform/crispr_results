@@ -1,5 +1,5 @@
 numpy==1.11.1
-Flask==0.11.1
+Flask==1.0
 Jinja2==2.8
 MarkupSafe
 Werkzeug
